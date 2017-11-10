@@ -10,45 +10,98 @@ let QUESTIONS = [];
 
 // token is global because store is reset between quiz games, but token should persist for 
 // entire session
-let sessionToken;
 
-const getInitialStore = function(){
-  return {
-    page: 'intro',
-    currentQuestionIndex: null,
-    userAnswers: [],
-    feedback: null,
-    sessionToken,
-  };
+// will initialize token upon quiz start, assigning it in STORE, and then allow to persist upon
+// reseting quiz
+
+// let sessionToken;
+
+const STORE = {
+  page: 'intro',
+  currentQuestionIndex: null,
+  userAnswers: [],
+  feedback: null,
+  sessionToken,
+
+  resetStore() {
+    this.page = 'intro';
+    this.currentQuestionIndex = null;
+    this.userAnswers = [];
+    this.feedback = null;
+    this.sessionToken;
+  },
+
+  getCurrentQuestion() {
+    return QUESTIONS[this.currentQuestionIndex];
+  },
+
+  getProgress() {
+    return {
+      current: this.currentQuestionIndex + 1,
+      total: QUESTIONS.length
+    };
+  },
+
+  getQuestion(index) {
+    return QUESTIONS[index];
+  },
+
+  getScore() {
+    return this.userAnswers.reduce((accumulator, userAnswer, index) => {
+      const question = this.getQuestion(index);
+  
+      if (question.correctAnswer === userAnswer) {
+        return accumulator + 1;
+      } else {
+        return accumulator;
+      }
+    }, 0);
+  }
+
 };
 
-let store = getInitialStore();
+// const getInitialStore = function(){
+//   return {
+//     page: 'intro',
+//     currentQuestionIndex: null,
+//     userAnswers: [],
+//     feedback: null,
+//     sessionToken,
+//   };
+// };
+
+// let store = getInitialStore();
 
 // Helper functions
 // ===============
+
+// render helper function
 const hideAll = function() {
   TOP_LEVEL_COMPONENTS.forEach(component => $(`.${component}`).hide());
 };
 
+// API helper function
 const buildBaseUrl = function(amt = 10, query = {}) {
   const url = new URL(BASE_API_URL + '/api.php');
   const queryKeys = Object.keys(query);
   url.searchParams.set('amount', amt);
 
-  if (store.sessionToken) {
-    url.searchParams.set('token', store.sessionToken);
+  if (STORE.sessionToken) {
+    url.searchParams.set('token', STORE.sessionToken);
   }
 
   queryKeys.forEach(key => url.searchParams.set(key, query[key]));
   return url;
 };
 
+// API helper function
 const buildTokenUrl = function() {
   return new URL(BASE_API_URL + '/api_token.php');
 };
 
+// API helper function
 const fetchToken = function(callback) {
-  if (sessionToken) {
+  if (STORE.sessionToken) {
     return callback();
   }
 
@@ -56,20 +109,23 @@ const fetchToken = function(callback) {
   url.searchParams.set('command', 'request');
 
   $.getJSON(url, res => {
-    sessionToken = res.token;
+    STORE.sessionToken = res.token;
     callback();
   }, err => console.log(err));
 };
 
+// API helper function
 const fetchQuestions = function(amt, query, callback) {
   $.getJSON(buildBaseUrl(amt, query), callback, err => console.log(err.message));
 };
 
+// API function helper function
 const seedQuestions = function(questions) {
   QUESTIONS.length = 0;
   questions.forEach(q => QUESTIONS.push(createQuestion(q)));
 };
 
+// API helper function
 const fetchAndSeedQuestions = function(amt, query, callback) {
   fetchQuestions(amt, query, res => {
     seedQuestions(res.results);
@@ -77,6 +133,7 @@ const fetchAndSeedQuestions = function(amt, query, callback) {
   });
 };
 
+// API helper function
 const createQuestion = function(question) {
   return {
     text: question.question,
@@ -85,32 +142,36 @@ const createQuestion = function(question) {
   };
 };
 
-const getScore = function() {
-  return store.userAnswers.reduce((accumulator, userAnswer, index) => {
-    const question = getQuestion(index);
+// STORE CLASS
+// const getScore = function() {
+//   return store.userAnswers.reduce((accumulator, userAnswer, index) => {
+//     const question = getQuestion(index);
 
-    if (question.correctAnswer === userAnswer) {
-      return accumulator + 1;
-    } else {
-      return accumulator;
-    }
-  }, 0);
-};
+//     if (question.correctAnswer === userAnswer) {
+//       return accumulator + 1;
+//     } else {
+//       return accumulator;
+//     }
+//   }, 0);
+// };
 
-const getProgress = function() {
-  return {
-    current: store.currentQuestionIndex + 1,
-    total: QUESTIONS.length
-  };
-};
+// STORE CLASS prototype function
+// const getProgress = function() {
+//   return {
+//     current: store.currentQuestionIndex + 1,
+//     total: QUESTIONS.length
+//   };
+// };
+ 
+// STORE CLASS prototype function
+// const getCurrentQuestion = function() {
+//   return QUESTIONS[store.currentQuestionIndex];
+// };
 
-const getCurrentQuestion = function() {
-  return QUESTIONS[store.currentQuestionIndex];
-};
-
-const getQuestion = function(index) {
-  return QUESTIONS[index];
-};
+// // STORE CLASS prototype function
+// const getQuestion = function(index) {
+//   return QUESTIONS[index];
+// };
 
 // HTML generator functions
 // ========================

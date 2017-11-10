@@ -10,35 +10,36 @@ let QUESTIONS = [];
 
 // STORE functions
 // ===============
-
-const STORE = {
-  page: 'intro',
-  currentQuestionIndex: null,
-  userAnswers: [],
-  feedback: null,
-  sessionToken: '',
+class Store {
+  constructor() {
+    this.page = 'intro';
+    this.currentQuestionIndex = null;
+    this.userAnswers = [];
+    this.feedback = null;
+    this.sessionToken = '';
+  }
 
   resetStore() {
     this.page = 'intro';
     this.currentQuestionIndex = null;
     this.userAnswers = [];
     this.feedback = null;
-  },
+  }
 
   getCurrentQuestion() {
     return QUESTIONS[this.currentQuestionIndex];
-  },
+  }
 
   getProgress() {
     return {
       current: this.currentQuestionIndex + 1,
       total: QUESTIONS.length
     };
-  },
+  }
 
   getQuestion(index) {
     return QUESTIONS[index];
-  },
+  }
 
   getScore() {
     return this.userAnswers.reduce((accumulator, userAnswer, index) => {
@@ -52,7 +53,9 @@ const STORE = {
     }, 0);
   }
 
-};
+}
+
+const STORE = new Store();
 
 // API fetch functions + decorate functions for QUESTIONS
 // =====================================================

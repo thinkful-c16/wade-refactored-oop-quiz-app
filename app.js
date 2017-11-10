@@ -12,7 +12,7 @@ let QUESTIONS = [];
 // entire session
 
 // will initialize token upon quiz start, assigning it in STORE, and then allow to persist upon
-// reseting quiz
+// resetting quiz
 
 // let sessionToken;
 
@@ -21,14 +21,13 @@ const STORE = {
   currentQuestionIndex: null,
   userAnswers: [],
   feedback: null,
-  sessionToken,
+  sessionToken: '',
 
   resetStore() {
     this.page = 'intro';
     this.currentQuestionIndex = null;
     this.userAnswers = [];
     this.feedback = null;
-    this.sessionToken;
   },
 
   getCurrentQuestion() {
@@ -215,14 +214,14 @@ const render = function() {
   let html;
   hideAll();
 
-  const question = getCurrentQuestion();
-  const { feedback } = store; 
-  const { current, total } = getProgress();
+  const question = STORE.getCurrentQuestion();
+  const { feedback } = STORE; 
+  const { current, total } = STORE.getProgress();
 
-  $('.js-score').html(`<span>Score: ${getScore()}</span>`);
+  $('.js-score').html(`<span>Score: ${STORE.getScore()}</span>`);
   $('.js-progress').html(`<span>Question ${current} of ${total}`);
 
-  switch (store.page) {
+  switch (STORE.page) {
   case 'intro':
     $('.js-intro').show();
     break;
@@ -254,9 +253,9 @@ const render = function() {
 // Event handler functions
 // =======================
 const handleStartQuiz = function() {
-  store = getInitialStore();
-  store.page = 'question';
-  store.currentQuestionIndex = 0;
+  STORE.resetStore;
+  STORE.page = 'question';
+  STORE.currentQuestionIndex = 0;
   const quantity = parseInt($('#js-question-quantity').find(':selected').val(), 10);
   fetchAndSeedQuestions(quantity, { type: 'multiple' }, () => {
     render();
@@ -265,29 +264,29 @@ const handleStartQuiz = function() {
 
 const handleSubmitAnswer = function(e) {
   e.preventDefault();
-  const question = getCurrentQuestion();
+  const question = STORE.getCurrentQuestion();
   const selected = $('input:checked').val();
-  store.userAnswers.push(selected);
+  STORE.userAnswers.push(selected);
   
   if (selected === question.correctAnswer) {
-    store.feedback = 'You got it!';
+    STORE.feedback = 'You got it!';
   } else {
-    store.feedback = `Too bad! The correct answer was: ${question.correctAnswer}`;
+    STORE.feedback = `Too bad! The correct answer was: ${question.correctAnswer}`;
   }
 
-  store.page = 'answer';
+  STORE.page = 'answer';
   render();
 };
 
 const handleNextQuestion = function() {
-  if (store.currentQuestionIndex === QUESTIONS.length - 1) {
-    store.page = 'outro';
+  if (STORE.currentQuestionIndex === QUESTIONS.length - 1) {
+    STORE.page = 'outro';
     render();
     return;
   }
 
-  store.currentQuestionIndex++;
-  store.page = 'question';
+  STORE.currentQuestionIndex++;
+  STORE.page = 'question';
   render();
 };
 

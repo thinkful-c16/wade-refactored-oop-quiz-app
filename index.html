@@ -8,7 +8,7 @@
   <title>Document</title>
 </head>
 <body>
-  <header role="quiz-header">
+  <header role="banner">
     <h1>Quiz</h1>
     <section class="quiz-status" role="quiz-status">
       <h4 class="progress js-progress"></h3>
@@ -16,19 +16,19 @@
     </section>
   </header>
 
-  <main>
-    <section class="intro js-intro" role="quiz-intro">
+  <main role="main">
+    <section class="intro js-intro" role="region">
       Welcome to the Trivia quiz.
-      <select id="js-question-quantity">
+      <select id="js-question-quantity" aria-controls="quiz-question-quantity" aria-live="polite">
         <option value="3" selected>3 questions</option>
         <option value="10">10 questions</option>
         <option value="25">25 questions</option>
       </select>
       <button disabled class="start js-start">Start Now</button>
     </section>
-    <section class="question js-question" role="quiz-question"></section>
-    <section class="question-feedback js-question-feedback" role="quiz-question-feedback"></section>
-    <section class="outro js-outro" role="quiz-outro">
+    <section class="question js-question" role="region"></section>
+    <section class="question-feedback js-question-feedback" role="region"></section>
+    <section class="outro js-outro" role="region">
       Thanks for playing!
       <button class="start js-start">Restart Quiz</button>
       </section>

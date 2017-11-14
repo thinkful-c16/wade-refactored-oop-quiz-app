@@ -8,17 +8,17 @@
   <title>Document</title>
 </head>
 <body>
-  <header>
+  <header role="quiz-header">
     <h1>Quiz</h1>
-    <section class="quiz-status">
+    <section class="quiz-status" role="quiz-status">
       <h4 class="progress js-progress"></h3>
       <h4 class="score js-score"></h3>
     </section>
   </header>
 
   <main>
-    <section class="intro js-intro">
-      Welcome to the quiz.
+    <section class="intro js-intro" role="quiz-intro">
+      Welcome to the Trivia quiz.
       <select id="js-question-quantity">
         <option value="3" selected>3 questions</option>
         <option value="10">10 questions</option>
@@ -26,9 +26,9 @@
       </select>
       <button disabled class="start js-start">Start Now</button>
     </section>
-    <section class="question js-question"></section>
-    <section class="question-feedback js-question-feedback"></section>
-    <section class="outro js-outro">
+    <section class="question js-question" role="quiz-question"></section>
+    <section class="question-feedback js-question-feedback" role="quiz-question-feedback"></section>
+    <section class="outro js-outro" role="quiz-outro">
       Thanks for playing!
       <button class="start js-start">Restart Quiz</button>
       </section>

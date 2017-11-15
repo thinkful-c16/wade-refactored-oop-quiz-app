@@ -1,7 +1,61 @@
+* {
+  font-family: 'Barlow', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #34495E;
+}
+
+header {
+  background-color: #2E4053;
+  color: rgb(211, 87, 9);
+  width: 100%;
+  margin: auto;
+  text-align: center; 
+}
+
+header h1 {
+  text-decoration: underline wavy #E59866;
+}
+
+header section {
+  color: #DC7633;
+}
+
+main {
+  background-color: #34495E;
+  color: #E59866;
+  width: 400px;
+  margin: auto;
+}
+
+select {
+  font-size: 95%;
+  background-color: #5D6D7E;
+  color: #F4F6F7;
+}
+
+button {
+  font-size: 95%;
+  background-color: #5D6D7E;
+  color: #F4F6F7;
+}
+
 .quiz-status, .outro {
   display: none;
 }
 
 .answer-item {
   list-style-type: none;
+}
+
+@media all and (max-width: 500px) {
+  header {
+    width: 100%;
+  }
+  main {
+    width: 100%;
+  }
 }
